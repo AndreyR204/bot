@@ -1,4 +1,7 @@
 package logic;
 
-public class StopCommand {
+public class StopCommand extends Command {
+    public StopCommand(String identifier, String description) {
+        super(identifier, description);
+    }
 }
