@@ -1,13 +1,10 @@
 package bot;
 
+import bot.commands.*;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import logic.*;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +15,7 @@ public class Bot extends TelegramLongPollingCommandBot {
 
     private static Map<Long, List<String>> userData;
 
-    public Bot(){
+    public Bot(String botName, String botToken){
         this.BOT_NAME = botName;
         this.BOT_TOKEN = botToken;
         register(new StartCommand("start", "Старт"));
@@ -43,14 +40,29 @@ public class Bot extends TelegramLongPollingCommandBot {
         userData.remove(chatId);
     }
 
-    void sendAnswer(AbsSender absSender, Long chatId, String commandName, String userName, String text) {
-        SendMessage message = new SendMessage();
-        message.enableMarkdown(true);
-        message.setChatId(chatId.toString());
-        message.setText(text);
+    private void setAnswer(Long chatId, String userName, String text) {
+        SendMessage answer = new SendMessage();
+        answer.setText(text);
+        answer.setChatId(chatId.toString());
         try {
-            absSender.execute(message);
+            execute(answer);
         } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getBotUsername() {
+        return BOT_NAME;
+    }
+
+    @Override
+    public void processNonCommandUpdate(Update update) {
+
+    }
+
+    @Override
+    public String getBotToken() {
+        return BOT_TOKEN;
     }
 }
