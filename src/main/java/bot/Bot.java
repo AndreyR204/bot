@@ -4,7 +4,6 @@ import bot.commands.*;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -17,6 +16,7 @@ public class Bot extends TelegramLongPollingCommandBot {
 
     private static Map<Long, List<String>> userData;
 
+
     public Bot(String botName, String botToken){
         this.BOT_NAME = botName;
         this.BOT_TOKEN = botToken;
@@ -28,13 +28,13 @@ public class Bot extends TelegramLongPollingCommandBot {
         register(new StartRecordCommand("startrecord", "Начать запись"));
 
     }
-    public static List<String> getUserData(Long chatId) {
+    public List<String> getUserData(Long chatId) {
         List<String> data = userData.get(chatId);
         return data;
     }
 
-    private void setUserData(Long chatId, List<String> settings) {
-        userData.put(chatId, settings);
+    public static void setUserData(Long chatId, List<String> data) {
+        userData.put(chatId, data);
         userData.remove(chatId);
     }
 
