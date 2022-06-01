@@ -1,12 +1,11 @@
 package logic;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 public class FoodRecorder {
+    private final HashMap<String, ArrayList<String>> products = new HashMap<>();
     public FoodRecorder(){
+
 
     }
     public String startRecord(Long id){
@@ -23,8 +22,9 @@ public class FoodRecorder {
                 "  %s жиров,  %s углеводов, \n в следующих продуктах: %s .", userData.get(0), date.toString(), userData.get(1),userData.get(2), userData.get(3), userData.get(4));
     }
 
-    public String add(Long id, ArrayList<String> product){
+    public String add(Long id, String productName){
         ArrayList<String> userData = bot.Bot.getUserData(id);
+        ArrayList<String> product = this.products.get(productName);
         userData.set(0, "");
         userData.set(1, Integer.toString(Integer.parseInt(userData.get(1)) + Integer.parseInt(product.get(1))));
         userData.set(2, Integer.toString(Integer.parseInt(userData.get(2)) + Integer.parseInt(product.get(2))));
@@ -32,5 +32,6 @@ public class FoodRecorder {
         userData.set(4, userData.get(4) + ", " + product.get(0));
         return String.format("Добавлен продукт: %s", product.get(0));
     }
+
 
 }
