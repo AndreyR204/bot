@@ -3,7 +3,7 @@ package logic;
 import java.util.*;
 
 public class FoodRecorder {
-    private final HashMap<String, ArrayList<String>> products = new HashMap<>();
+    public static final HashMap<String, ArrayList<String>> products = new HashMap<>();
     public FoodRecorder(){
 
 
@@ -24,7 +24,7 @@ public class FoodRecorder {
 
     public String add(Long id, String productName){
         ArrayList<String> userData = bot.Bot.getUserData(id);
-        ArrayList<String> product = this.products.get(productName);
+        ArrayList<String> product = products.get(productName);
         userData.set(0, "");
         userData.set(1, Integer.toString(Integer.parseInt(userData.get(1)) + Integer.parseInt(product.get(1))));
         userData.set(2, Integer.toString(Integer.parseInt(userData.get(2)) + Integer.parseInt(product.get(2))));
