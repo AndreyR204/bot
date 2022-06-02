@@ -10,7 +10,7 @@ abstract class Command extends BotCommand {
         super(identifier, description);
     }
 
-    void sendAnswer(AbsSender absSender, Long chatId, String commandName, String userName, String text, InlineKeyboardMarkup keyboardMarkup) {
+    void sendAnswer(AbsSender absSender, Long chatId, String text, InlineKeyboardMarkup keyboardMarkup) {
         SendMessage message = new SendMessage();
         message.enableMarkdown(true);
         message.setChatId(chatId.toString());

@@ -11,6 +11,6 @@ public class StartRecordCommand extends Command{
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-
+        sendAnswer(absSender, chat.getId(), logic.FoodRecorder.startRecord(chat.getId()), null);
     }
 }

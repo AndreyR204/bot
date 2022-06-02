@@ -8,21 +8,21 @@ public class FoodRecorder {
 
 
     }
-    public String startRecord(Long id){
+    public static String startRecord(Long id){
         Date date = new Date();
         ArrayList<String> nullData = (ArrayList<String>) Arrays.asList(date.toString(), "0", "0", "0", "");
         bot.Bot.setUserData(id, nullData);
         return String.format("%s \n Начата запись продуктов", date.toString());
     }
 
-    public  String stopRecord(Long id){
+    public static  String stopRecord(Long id){
         Date date = new Date();
         ArrayList<String> userData = bot.Bot.getUserData(id);
         return String.format("За период с %s по %s, \n Вы съели %s белков," +
                 "  %s жиров,  %s углеводов, \n в следующих продуктах: %s .", userData.get(0), date.toString(), userData.get(1),userData.get(2), userData.get(3), userData.get(4));
     }
 
-    public String add(Long id, String productName){
+    public static String add(Long id, String productName){
         ArrayList<String> userData = bot.Bot.getUserData(id);
         ArrayList<String> product = products.get(productName);
         userData.set(0, "");
