@@ -24,7 +24,6 @@ public class Bot extends TelegramLongPollingCommandBot {
         register(new StartCommand("start", "Старт"));
         register(new AddCommand("add", "Добавить"));
         register(new HelpCommand("help","Помощь"));
-        register(new StopCommand("stop", "Стоп"));
         register(new StopRecordCommand("stoprecord", "Остановить запись"));
         register(new StartRecordCommand("startrecord", "Начать запись"));
 
@@ -51,17 +50,22 @@ public class Bot extends TelegramLongPollingCommandBot {
 
     @Override
     public void processNonCommandUpdate(Update update) {
-        Message msg = update.getMessage();
-        Long chatId = msg.getChatId();
+        if(update.hasCallbackQuery()){
+            logic.FoodRecorder.add(update.getMessage().getChatId(), update.getCallbackQuery().getData());
+        } else {
+            Message msg = update.getMessage();
+            Long chatId = msg.getChatId();
 
-        SendMessage answer = new SendMessage();
-        answer.setText("Ошибка");
-        answer.setChatId(chatId.toString());
-        try {
-            execute(answer);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+            SendMessage answer = new SendMessage();
+            answer.setText("Ошибка");
+            answer.setChatId(chatId.toString());
+            try {
+                execute(answer);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     @Override

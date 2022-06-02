@@ -11,7 +11,7 @@ public class StartCommand extends Command {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-
+        sendAnswer(absSender, chat.getId(), "Здравствуйте, чтобы начать запись продуктов введите /startrecord", null);
     }
 
 }

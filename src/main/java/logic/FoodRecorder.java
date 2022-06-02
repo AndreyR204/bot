@@ -1,10 +1,34 @@
 package logic;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.*;
 
 public class FoodRecorder {
-    public static final HashMap<String, ArrayList<String>> products = new HashMap<>();
+    public static HashMap<String, ArrayList<String>> products = new HashMap<>();
     public FoodRecorder(){
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream("../Config.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ObjectInputStream objectInputStream = null;
+        try {
+            objectInputStream = new ObjectInputStream(fileInputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            this.products = (HashMap<String, ArrayList<String>>) objectInputStream.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
     }
