@@ -1,6 +1,7 @@
 package bot;
 
 import bot.commands.*;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -11,7 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Bot extends TelegramLongPollingCommandBot {
+//#TODO:1. Статический FoodRecorder -> нестатический и передавать везде в констркуторы
+//#TODO:2. Отделяемость логики от телеграма
+//#TODO:3. Токен и имя брать из переменных среды, не хардкодить
+//#TODO:4. Класс для БЖУ вместо ArrayList
+//#TODO:5. Убрать Config.txt, добавить все кодом
+
+public class Bot extends TelegramLongPollingBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
 
@@ -21,11 +28,6 @@ public class Bot extends TelegramLongPollingCommandBot {
     public Bot(String botName, String botToken){
         this.BOT_NAME = botName;
         this.BOT_TOKEN = botToken;
-        register(new StartCommand("start", "Старт"));
-        register(new AddCommand("add", "Добавить"));
-        register(new HelpCommand("help","Помощь"));
-        register(new StopRecordCommand("stoprecord", "Остановить запись"));
-        register(new StartRecordCommand("startrecord", "Начать запись"));
 
     }
     public static ArrayList<String> getUserData(Long chatId) {
@@ -50,6 +52,17 @@ public class Bot extends TelegramLongPollingCommandBot {
 
     @Override
     public void processNonCommandUpdate(Update update) {
+        if (update.hasMessage()){
+            if (update.getMessage().hasText()){
+                switch (update.getMessage().getText()){
+                    case "/start" : {}
+                    case "/help" : {}
+                    case "/startrecord" : {}
+                    case "/stoprecord" : {}
+                    case "/add" : {}
+                }
+            }
+        }
         if(update.hasCallbackQuery()){
             logic.FoodRecorder.add(update.getMessage().getChatId(), update.getCallbackQuery().getData());
         } else {
@@ -71,5 +84,10 @@ public class Bot extends TelegramLongPollingCommandBot {
     @Override
     public String getBotToken() {
         return BOT_TOKEN;
+    }
+
+    @Override
+    public void onUpdateReceived(Update update) {
+
     }
 }
