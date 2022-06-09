@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 
 //#TODO:2. Отделяемость логики от телеграма
-//#TODO:3. Токен и имя брать из переменных среды, не хардкодить
 //#TODO:5. Убрать Config.txt, добавить все кодом
 
 public class Bot extends TelegramLongPollingBot {

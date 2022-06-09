@@ -7,7 +7,7 @@ public class BotProgram {
     public static void main(String[] args){
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(new Bot("BOT_NAME", "BOT_TOKEN"));
+            botsApi.registerBot(new Bot(System.getenv("BOT_NAME"), System.getenv("BOT_TOKEN")));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
