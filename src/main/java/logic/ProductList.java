@@ -7,26 +7,33 @@ import java.util.HashMap;
 public class ProductList {
     public Date startTime;
     public Date endTime;
+    public Integer proteins = null;
+    public Integer fats = null;
+    public Integer carbohydrates = null;
     public ArrayList<Product> products;
 
     public ProductList(){
         this.startTime = new Date();
     }
 
-    public ArrayList<Product> getProducts() {
-        return products;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
 
     public void add(Product product){
         this.products.add(product);
+        this.proteins += product.proteins;
+        this.fats += product.fats;
+        this.carbohydrates += product.carbohydrates;
+    }
+
+    public String getProductNames(){
+        String products = "";
+        for (Product product : this.products){
+            if (products.isBlank()){
+                products += product.name;
+            } else {
+                products += ", " + product.name;
+            }
+        }
+        return products;
     }
 
     public HashMap<String, String> getList(){

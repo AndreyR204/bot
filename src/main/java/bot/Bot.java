@@ -1,28 +1,29 @@
 package bot;
 
 import bot.commands.*;
+import logic.FoodRecorder;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-//#TODO:1. Статический FoodRecorder -> нестатический и передавать везде в констркуторы
 //#TODO:2. Отделяемость логики от телеграма
 //#TODO:3. Токен и имя брать из переменных среды, не хардкодить
-//#TODO:4. Класс для БЖУ вместо ArrayList
 //#TODO:5. Убрать Config.txt, добавить все кодом
 
 public class Bot extends TelegramLongPollingBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
-
-    private static Map<Long, ArrayList<String>> userData;
+    private final FoodRecorder foodRecorder = new FoodRecorder();
 
 
     public Bot(String botName, String botToken){
@@ -30,20 +31,6 @@ public class Bot extends TelegramLongPollingBot {
         this.BOT_TOKEN = botToken;
 
     }
-    public static ArrayList<String> getUserData(Long chatId) {
-        ArrayList<String> data = userData.get(chatId);
-        return data;
-    }
-
-    public static void setUserData(Long chatId, ArrayList<String> data) {
-        userData.put(chatId, data);
-        userData.remove(chatId);
-    }
-
-    private void removeUserData(Long chatId) {
-        userData.remove(chatId);
-    }
-
 
     @Override
     public String getBotUsername() {
@@ -52,17 +39,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void processNonCommandUpdate(Update update) {
-        if (update.hasMessage()){
-            if (update.getMessage().hasText()){
-                switch (update.getMessage().getText()){
-                    case "/start" : {}
-                    case "/help" : {}
-                    case "/startrecord" : {}
-                    case "/stoprecord" : {}
-                    case "/add" : {}
-                }
-            }
-        }
+
         if(update.hasCallbackQuery()){
             logic.FoodRecorder.add(update.getMessage().getChatId(), update.getCallbackQuery().getData());
         } else {
@@ -88,6 +65,48 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        Long id = update.getMessage().getChatId();
+        if (update.hasMessage()){
+            if (update.getMessage().hasText()){
+                switch (update.getMessage().getText()){
+                    case "/start" : {sendMessage("Здравствуйте, чтобы начать запись продуктов введите /startrecord", id, null);}
+                    case "/help" : { sendMessage("Бот для подсчета съеденных белков, жиров и углеводов за преиод", id, null);}
+                    case "/startrecord" : { sendMessage(this.foodRecorder.startRecord(id), id, null);}
+                    case "/stoprecord" : { sendMessage(this.foodRecorder.stopRecord(id), id, null);}
+                    case "/add" : {sendMessage("Выберите продукт", id, createKeyboard(this.foodRecorder.getAddKeyboard());}
+                }
+            }
+        }
+        if (update.hasCallbackQuery()){
+            this.foodRecorder.add(id, update.getCallbackQuery().getData());
+        }
 
+    }
+
+    public InlineKeyboardMarkup createKeyboard(Set<String> buttons){
+        InlineKeyboardMarkup inlineKeyboardMarkup =new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboardButtons = new ArrayList<>();
+        for (String key : buttons){
+            InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+            inlineKeyboardButton.setText(key);
+            inlineKeyboardButton.setCallbackData(key);
+            List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+            keyboardButtonsRow1.add(inlineKeyboardButton);
+            keyboardButtons.add(keyboardButtonsRow1);
+        }
+        inlineKeyboardMarkup.setKeyboard(keyboardButtons);
+        return inlineKeyboardMarkup;
+    }
+
+    public void sendMessage(String text, Long chatId, InlineKeyboardMarkup keyboard){
+        SendMessage answer = new SendMessage();
+        answer.setText(text);
+        answer.setChatId(chatId.toString());
+        answer.setReplyMarkup(keyboard);
+        try {
+            execute(answer);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }
