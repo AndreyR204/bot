@@ -1,6 +1,5 @@
 package bot;
 
-import bot.commands.*;
 import logic.FoodRecorder;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -37,26 +36,6 @@ public class Bot extends TelegramLongPollingBot {
         return BOT_NAME;
     }
 
-    @Override
-    public void processNonCommandUpdate(Update update) {
-
-        if(update.hasCallbackQuery()){
-            logic.FoodRecorder.add(update.getMessage().getChatId(), update.getCallbackQuery().getData());
-        } else {
-            Message msg = update.getMessage();
-            Long chatId = msg.getChatId();
-
-            SendMessage answer = new SendMessage();
-            answer.setText("Ошибка");
-            answer.setChatId(chatId.toString());
-            try {
-                execute(answer);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
 
     @Override
     public String getBotToken() {
@@ -73,7 +52,8 @@ public class Bot extends TelegramLongPollingBot {
                     case "/help" : { sendMessage("Бот для подсчета съеденных белков, жиров и углеводов за преиод", id, null);}
                     case "/startrecord" : { sendMessage(this.foodRecorder.startRecord(id), id, null);}
                     case "/stoprecord" : { sendMessage(this.foodRecorder.stopRecord(id), id, null);}
-                    case "/add" : {sendMessage("Выберите продукт", id, createKeyboard(this.foodRecorder.getAddKeyboard());}
+                    case "/add" : { sendMessage("Выберите продукт", id, createKeyboard(this.foodRecorder.getAddKeyboard()));}
+                    default: { sendMessage("Ошибка", id, null);}
                 }
             }
         }
