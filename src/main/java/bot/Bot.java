@@ -40,22 +40,22 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         Long id = update.getMessage().getChatId();
-        if (update.hasMessage()){
-            if (update.getMessage().hasText()){
-                switch (update.getMessage().getText()){
-                    case "/start" : {sendMessage("Здравствуйте, чтобы начать запись продуктов введите /startrecord", id, null);}
-                    case "/help" : { sendMessage("Бот для подсчета съеденных белков, жиров и углеводов за преиод", id, null);}
-                    case "/startrecord" : { sendMessage(this.foodRecorder.startRecord(id), id, null);}
-                    case "/stoprecord" : { sendMessage(this.foodRecorder.stopRecord(id), id, null);}
-                    case "/add" : { sendMessage("Выберите продукт", id, createKeyboard(this.foodRecorder.getAddKeyboard()));}
-                    default: { sendMessage("Ошибка", id, null);}
+        if (update.hasCallbackQuery()){
+            this.foodRecorder.add(id, update.getCallbackQuery().getData());
+        } else {
+            if (update.hasMessage()){
+                if (update.getMessage().hasText()){
+                    switch (update.getMessage().getText()){
+                        case "/start" : {sendMessage("Здравствуйте, чтобы начать запись продуктов введите /startrecord", id, null);}
+                        case "/help" : { sendMessage("Бот для подсчета съеденных белков, жиров и углеводов за преиод", id, null);}
+                        case "/startrecord" : { sendMessage(this.foodRecorder.startRecord(id), id, null);}
+                        case "/stoprecord" : { sendMessage(this.foodRecorder.stopRecord(id), id, null);}
+                        case "/add" : { sendMessage("Выберите продукт", id, createKeyboard(this.foodRecorder.getAddKeyboard()));}
+                        default: { sendMessage("Ошибка", id, null);}
+                    }
                 }
             }
         }
-        if (update.hasCallbackQuery()){
-            this.foodRecorder.add(id, update.getCallbackQuery().getData());
-        }
-
     }
 
     public InlineKeyboardMarkup createKeyboard(Set<String> buttons){

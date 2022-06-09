@@ -6,6 +6,7 @@ public class FoodRecorder {
     public HashMap<String, Product> products = new HashMap<>();
     private final DataManager dataManager = new DataManager();
     public FoodRecorder(){
+        products.put("test", new Product("test", 1, 1, 1));
 
     }
     public String startRecord(Long id){
