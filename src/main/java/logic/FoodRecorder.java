@@ -19,8 +19,8 @@ public class FoodRecorder {
         try {
             ProductList list = this.dataManager.getUserData(id);
             list.close();
-            return String.format("За период с %s по %s, \n Вы съели %s белков," +
-                    "  %s жиров,  %s углеводов, \n в следующих продуктах: %s .", list.startTime, list.endTime, list.proteins, list.fats, list.carbohydrates, list.getProductNames());
+            return String.format("За период с %s по %s, \n Вы съели %s г. белков," +
+                    "  %s г. жиров,  %s г. углеводов, \n в следующих продуктах: %s .", list.startTime, list.endTime, list.proteins, list.fats, list.carbohydrates, list.getProductNames());
         } catch (NullPointerException e){
             return "Ошибка";
         }
