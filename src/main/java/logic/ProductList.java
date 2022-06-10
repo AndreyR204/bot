@@ -7,10 +7,10 @@ import java.util.HashMap;
 public class ProductList {
     public Date startTime;
     public Date endTime;
-    public Integer proteins = null;
-    public Integer fats = null;
-    public Integer carbohydrates = null;
-    public ArrayList<Product> products;
+    public Integer proteins = 0;
+    public Integer fats = 0;
+    public Integer carbohydrates = 0;
+    public ArrayList<Product> products = new ArrayList<>();
 
     public ProductList(){
         this.startTime = new Date();

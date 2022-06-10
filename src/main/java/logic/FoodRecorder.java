@@ -10,7 +10,8 @@ public class FoodRecorder {
 
     }
     public String startRecord(Long id){
-        this.dataManager.setUserData(id, new ProductList());
+        ProductList list = new ProductList();
+        this.dataManager.setUserData(id, list);
         return "Начата запись продуктов";
     }
 

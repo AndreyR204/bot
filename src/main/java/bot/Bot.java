@@ -39,19 +39,32 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Long id = update.getMessage().getChatId();
         if (update.hasCallbackQuery()){
-            this.foodRecorder.add(id, update.getCallbackQuery().getData());
+            Long id1 = update.getCallbackQuery().getFrom().getId();
+            this.foodRecorder.add(id1, update.getCallbackQuery().getData());
         } else {
             if (update.hasMessage()){
+                Long id = update.getMessage().getChatId();
                 if (update.getMessage().hasText()){
                     switch (update.getMessage().getText()){
-                        case "/start" : {sendMessage("Здравствуйте, чтобы начать запись продуктов введите /startrecord", id, null);}
-                        case "/help" : { sendMessage("Бот для подсчета съеденных белков, жиров и углеводов за преиод", id, null);}
-                        case "/startrecord" : { sendMessage(this.foodRecorder.startRecord(id), id, null);}
-                        case "/stoprecord" : { sendMessage(this.foodRecorder.stopRecord(id), id, null);}
-                        case "/add" : { sendMessage("Выберите продукт", id, createKeyboard(this.foodRecorder.getAddKeyboard()));}
-                        default: { sendMessage("Ошибка", id, null);}
+                        case ("/start") :
+                            sendMessage("Здравствуйте, чтобы начать запись продуктов введите /startrecord", id, null);
+                            break;
+                        case ("/help") :
+                            sendMessage("Бот для подсчета съеденных белков, жиров и углеводов за преиод", id, null);
+                            break;
+                        case ("/startrecord") :
+                            sendMessage(this.foodRecorder.startRecord(id), id, null);
+                            break;
+                        case ("/stoprecord") :
+                            sendMessage(this.foodRecorder.stopRecord(id), id, null);
+                            break;
+                        case ("/add") :
+                            sendMessage("Выберите продукт", id, createKeyboard(this.foodRecorder.getAddKeyboard()));
+                            break;
+                        default:
+                            sendMessage("Ошибка", id, null);
+                            break;
                     }
                 }
             }
@@ -63,8 +76,8 @@ public class Bot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> keyboardButtons = new ArrayList<>();
         for (String key : buttons){
             InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-            inlineKeyboardButton.setText(key);
-            inlineKeyboardButton.setCallbackData(key);
+            inlineKeyboardButton.setText(key.toString());
+            inlineKeyboardButton.setCallbackData(key.toString());
             List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
             keyboardButtonsRow1.add(inlineKeyboardButton);
             keyboardButtons.add(keyboardButtonsRow1);
