@@ -36,31 +36,6 @@ public class ProductList {
         return products;
     }
 
-    public HashMap<String, String> getList(){
-        HashMap<String, String> info = new  HashMap<>();
-        info.put("startTime", this.startTime.toString());
-        info.put("endTime", this.startTime.toString());
-        String products = "";
-        Integer proteins = null;
-        Integer fats = null;
-        Integer carbohydrates = null;
-        for (Product product : this.products){
-            proteins += product.proteins;
-            fats += product.fats;
-            carbohydrates += product.carbohydrates;
-            if (products.isBlank()){
-                products += product.name;
-            } else {
-                products += ", " + product.name;
-            }
-        }
-        info.put("proteins", proteins.toString());
-        info.put("fats", fats.toString());
-        info.put("carbohydrates", carbohydrates.toString());
-        info.put("products", products);
-        return info;
-    }
-
     public void close(){
         this.endTime = new Date();
     }

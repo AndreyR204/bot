@@ -41,7 +41,7 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasCallbackQuery()){
             Long id1 = update.getCallbackQuery().getFrom().getId();
-            this.foodRecorder.add(id1, update.getCallbackQuery().getData());
+            sendMessage(this.foodRecorder.add(id1, update.getCallbackQuery().getData()), id1, null);
         } else {
             if (update.hasMessage()){
                 Long id = update.getMessage().getChatId();

@@ -16,18 +16,28 @@ public class FoodRecorder {
     }
 
     public String stopRecord(Long id){
-        ProductList list = this.dataManager.getUserData(id);
-        list.close();
-        return String.format("За период с %s по %s, \n Вы съели %s белков," +
-                "  %s жиров,  %s углеводов, \n в следующих продуктах: %s .", list.startTime, list.endTime, list.proteins, list.fats, list.carbohydrates, list.getProductNames());
+        try {
+            ProductList list = this.dataManager.getUserData(id);
+            list.close();
+            return String.format("За период с %s по %s, \n Вы съели %s белков," +
+                    "  %s жиров,  %s углеводов, \n в следующих продуктах: %s .", list.startTime, list.endTime, list.proteins, list.fats, list.carbohydrates, list.getProductNames());
+        } catch (NullPointerException e){
+            return "Ошибка";
+        }
+
     }
 
     public String add(Long id, String productName){
-        Product product = products.get(productName);
-        ProductList list = this.dataManager.getUserData(id);
-        list.add(product);
-        this.dataManager.setUserData(id, list);
-        return String.format("Добавлен продукт: %s", product.name);
+        try {
+            Product product = products.get(productName);
+            ProductList list = this.dataManager.getUserData(id);
+            list.add(product);
+            this.dataManager.setUserData(id, list);
+            return String.format("Добавлен продукт: %s", product.name);
+        } catch (NullPointerException e){
+            return "Ошибка";
+        }
+
     }
 
     public Set<String> getAddKeyboard(){
