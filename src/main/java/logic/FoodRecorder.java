@@ -6,7 +6,11 @@ public class FoodRecorder {
     public HashMap<String, Product> products = new HashMap<>();
     private final DataManager dataManager = new DataManager();
     public FoodRecorder(){
-        products.put("test", new Product("test", 1.1, 1.2, 1.3));
+        products.put("Котлета (100 г)", new Product("Котлета (100 г)", 21.6, 16.8, 2.7));
+        products.put("Йогурт (100 г)", new Product("Йогурт (100 г)", 2.8, 6.0, 10.0));
+        products.put("Кефир (100 г)", new Product("Кефир (100 г)", 3.0, 2.5, 4.0));
+        products.put("Сыр (100 г)", new Product("Сыр (100 г)", 11.7, 17.6, 2.1));
+        products.put("Хлеб (100 г)", new Product("Хлеб (100 г)", 9.5, 4.5, 62.0));
 
     }
     public String startRecord(Long id){

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-//#TODO:5. Убрать Config.txt, добавить все кодом
 
 public class Bot extends TelegramLongPollingBot {
     private final String BOT_NAME;
