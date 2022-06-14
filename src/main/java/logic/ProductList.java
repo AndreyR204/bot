@@ -7,9 +7,9 @@ import java.util.HashMap;
 public class ProductList {
     public Date startTime;
     public Date endTime;
-    public Integer proteins = 0;
-    public Integer fats = 0;
-    public Integer carbohydrates = 0;
+    public Double proteins = 0.0;
+    public Double fats = 0.0;
+    public Double carbohydrates = 0.0;
     public ArrayList<Product> products = new ArrayList<>();
 
     public ProductList(){

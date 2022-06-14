@@ -2,11 +2,11 @@ package logic;
 
 public class Product {
     public String name;
-    public Integer proteins;
-    public Integer fats;
-    public Integer carbohydrates;
+    public Double proteins;
+    public Double fats;
+    public Double carbohydrates;
 
-    public Product(String name, Integer proteins, Integer fats, Integer carbohydrates){
+    public Product(String name, Double proteins, Double fats, Double carbohydrates){
         this.name = name;
         this.proteins = proteins;
         this.fats = fats;
